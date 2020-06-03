@@ -1,3 +1,1 @@
-import { Octokit } from '@octokit/rest';
-
-const octokit = new Octokit()
+import * as querystring from 'querystring'
