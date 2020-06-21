@@ -4,6 +4,9 @@
   "main": "index.js",
   "author": "Jose Diaz-Gonzalez <jose.diazg@protonmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start-dev": "PORT=8080 ts-node api/app.ts"
+  },
   "dependencies": {
     "@octokit/auth-token": "^2.4.1",
     "@octokit/rest": "^17.9.3",
