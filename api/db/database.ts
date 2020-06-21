@@ -1,4 +1,4 @@
-import { connect, Connection, Schema, connection } from 'mongoose';
+import { connect, Connection, connection, Schema } from 'mongoose';
 
 interface DBParams {
     host?: string;
@@ -8,7 +8,7 @@ interface DBParams {
     password?: string;
 }
 
-export class DBManager {
+class DBManager {
     private static instance: DBManager;
     host?: string;
     port?: string;
@@ -36,13 +36,15 @@ export class DBManager {
         return DBManager.getInstance().getConnection();
     }
 
-    connect({ host = 'localhost', port = '27017', database, username, password }: DBParams): Promise<void> {
-        const mongoURL = `mongodb://${username}:${password}@${host}:${port}/${database}`;
-        return connect(mongoURL, { useNewUrlParser: true })
-            .then(() => {
-                console.log('Connected to MongoDD');
-                this.assignConnectionInstance(connection);
-            }).catch(err => console.error('Could not connect to MongoDB', err));
+    async connect({ host = 'localhost', port = '27017', database, username, password }: DBParams): Promise<void> {
+        const mongoURL = `mongodb://${host}:${port}/${database}`;
+        try {
+            await connect(mongoURL, { useNewUrlParser: true });
+            this.assignConnectionInstance(connection);
+        } catch (error) {
+            console.error('Could not connect to MongoDB: ', error);
+            throw error;
+        }
     }
 
     getConnection(): Connection | undefined {
@@ -50,7 +52,7 @@ export class DBManager {
     }
 
     setSchema(): void {
-        const schema = new Schema({
+        const userSchema = new Schema({
             username: String,
             password: String
         });
@@ -59,6 +61,6 @@ export class DBManager {
     private assignConnectionInstance(connection: Connection): void {
         this.connection = connection;
     }
-
-
 }
+
+export default DBManager;

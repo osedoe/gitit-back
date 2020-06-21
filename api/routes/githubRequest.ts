@@ -1,5 +1,8 @@
 import * as express from 'express';
 
+/**
+ * @deprecated
+ */
 const router = express.Router();
 
 router.get('/notifications', (req, res, next) => {
