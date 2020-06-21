@@ -1,18 +1,17 @@
 import * as express from 'express'
 import github from './routes/githubRequest';
-import * as isDev from "electron-is-dev";
+import * as dotenv from 'dotenv';
+import authRouter from "./routes/auth";
 
-if (isDev) {
-    console.log('Running in development');
-} else {
-    console.log('Running in production');
-}
+dotenv.config();
 
 const app = express();
+
 const port = process.env.PORT || 3000;
 
-
+app.use(express.json())
 app.use('/github', github)
+app.use('/auth', authRouter)
 
 app.get('/', (req, res) => res.send('Hello World!'))
 
