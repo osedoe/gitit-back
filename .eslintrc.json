@@ -34,6 +34,13 @@
   "rules": {
     "func-names": "off",
     "global-require": 0,
+    "semi": [
+      2,
+      "always",
+      {
+        "omitLastInOneLineBlock": true
+      }
+    ],
     "import/prefer-default-export": 0,
     "import/no-useless-path-segments": 1,
     "import/no-unresolved": 0,
