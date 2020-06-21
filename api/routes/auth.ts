@@ -1,7 +1,15 @@
 import * as express from 'express'
 
-const router = express.Router()
+const authRouter = express.Router()
 
-router.get('/token', (req, res, next) => {
+authRouter.get('/token', (req, res, next) => {
     res.send('TOKEN');
 })
+
+authRouter.post('/token', (req, res, next) => {
+    const token = req.body.token
+
+    res.send(`Token: ${token}`);
+})
+
+export default authRouter;
