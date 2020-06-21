@@ -8,7 +8,7 @@ authRouter.get('/token', (req, res, next) => {
 
 authRouter.post('/token', (req, res, next) => {
     const token = req.body.token
-
+    console.log('🍓', token)
     res.send(`Token: ${token}`);
 })
 

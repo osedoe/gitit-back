@@ -70,5 +70,9 @@
     "./api"
     //    "./test",
     //    "./mocks"
+  ],
+  "exclude": [
+    ".idea",
+    "node_modules"
   ]
 }
