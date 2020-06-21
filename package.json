@@ -5,7 +5,8 @@
   "author": "Jose Diaz-Gonzalez <jose.diazg@protonmail.com>",
   "license": "MIT",
   "scripts": {
-    "start-dev": "PORT=8080 ts-node api/app.ts"
+    "start-once": "PORT=8080 ts-node api/app.ts",
+    "start": "PORT=8080 nodemon api/app.ts"
   },
   "dependencies": {
     "@octokit/auth-token": "^2.4.1",
@@ -24,9 +25,20 @@
     "eslint": "^7.1.0",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-import": "^2.21.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-prettier": "^3.1.3",
+    "nodemon": "^2.0.4",
     "prettier": "^2.0.5"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "**/*.test.ts",
+      "**/*.spec.ts",
+      ".git",
+      "node_modules"
+    ],
+
+    "ext": "ts"
   }
 }
