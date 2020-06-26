@@ -1,19 +1,15 @@
 import * as express from 'express';
-import { NextFunction, Request, Response } from 'express';
-import { validateUser } from '../middleware/validators';
-import { requestSignup } from './authRequests';
+import { validateLogin, validateSignUp } from '../middleware/validators';
+import { requestLogin, requestSignup } from './authRequests';
 
 const authRouter = express.Router();
 
-authRouter.get('/token', (req, res, next) => {
+authRouter.get('/token', (req, res) => {
     res.send('TOKEN');
 });
 
-authRouter.post('/signup', validateUser, requestSignup);
+authRouter.post('/signup', validateSignUp, requestSignup);
 
-authRouter.post('/login', async (req: Request, res: Response, next: NextFunction) => {
-    // TODO: https://dev.to/dipakkr/implementing-authentication-in-nodejs-with-express-and-jwt-codelab-1-j5i - point 8
-    // Review egghead - watch later playlist
-});
+authRouter.post('/login', validateLogin, requestLogin);
 
 export default authRouter;
