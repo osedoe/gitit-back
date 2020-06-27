@@ -3,10 +3,10 @@ import { validationResult } from 'express-validator';
 import User, { UserModel } from '../../model/User';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
-import { Secret } from 'jsonwebtoken';
-import * as dotenv from 'dotenv';
+import { Config } from '../../utils/Config';
+// import * as dotenv from 'dotenv';
 
-const env = dotenv.config();
+// const env = dotenv.config();
 
 export const requestSignup = async (req: Request, res: Response) => {
   const errors = validationResult(req);
@@ -35,7 +35,7 @@ export const requestSignup = async (req: Request, res: Response) => {
     const payload = { user: { id: user.id } };
 
     // TODO: We should have different keys for production and development
-    jwt.sign(payload, env.parsed?.JWT_KEY as Secret, {}, (err, jwtToken) => {
+    jwt.sign(payload, Config.getJwtToken(), {}, (err, jwtToken) => {
       if (err) {
         throw err;
       }
@@ -82,7 +82,7 @@ export const requestLogin = async (req: Request, res: Response) => {
       }
     };
 
-    jwt.sign(payload, env.parsed?.JWT_KEY as Secret, {}, (err, jwtToken) => {
+    jwt.sign(payload, Config.getJwtToken(), {}, (err, jwtToken) => {
       if (err) {
         throw err;
       }

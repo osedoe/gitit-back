@@ -1,20 +1,14 @@
 import * as express from 'express';
-import * as dotenv from 'dotenv';
 import userRouter from './routes/user/userRouter';
 import DBManager from './db/database';
-
-const env = dotenv.config();
-
-if (env.error) {
-  throw env.error;
-}
+import { Config } from './utils/Config';
 
 const dbConfig = {
-  host: env.parsed?.HOST ?? 'localhost',
-  port: env.parsed?.PORT ?? 27017,
-  database: env.parsed?.DATABASE,
-  username: env.parsed?.USERNAME,
-  password: env.parsed?.PASSWORD
+  host: Config.getHost(),
+  port: Config.getPort(),
+  database: Config.getDatabase(),
+  username: Config.getUsername(),
+  password: Config.getPassword()
 };
 
 const app = express();
@@ -28,8 +22,9 @@ DBManager.connect({
   database: dbConfig.database,
   username: dbConfig.username,
   password: dbConfig.password
-}).then(() => console.log('✅ Succeed!'))
-  .catch(err => console.error('🔴', err));
+})
+  .then(() => console.log('✅ Succeed!'))
+  .catch((err) => console.error('🔴', err));
 
 app.use(express.json());
 
