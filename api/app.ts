@@ -22,7 +22,13 @@ const app = express();
 
 const port = process.env.PORT ?? 3000;
 
-DBManager.connect({ host: dbConfig.host, port: dbConfig.port, database: dbConfig.database, username: dbConfig.username, password: dbConfig.password });
+DBManager.connect({
+    host: dbConfig.host,
+    port: dbConfig.port,
+    database: dbConfig.database,
+    username: dbConfig.username,
+    password: dbConfig.password
+});
 
 app.use(express.json());
 app.use('/github', github);

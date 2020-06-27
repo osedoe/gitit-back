@@ -10,7 +10,6 @@ router.get('/notifications', (req, res, next) => {
 });
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
-router.get('/login', (req, res, next) => {
-});
+router.get('/login', (req, res, next) => {});
 
 export default router;

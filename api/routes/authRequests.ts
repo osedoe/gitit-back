@@ -18,7 +18,9 @@ export const requestSignup = async (req: Request, res: Response) => {
     try {
         let user = await User.findOne({ email });
         if (user) {
-            return res.status(400).json({ message: 'User already exists. Please update the token...' });
+            return res
+                .status(400)
+                .json({ message: 'User already exists. Please update the token...' });
         }
 
         user = new User({ email, token });
@@ -31,12 +33,11 @@ export const requestSignup = async (req: Request, res: Response) => {
         const payload = { user: { id: user.id } };
 
         jwt.sign(payload, 'randomString', {}, (err, jwtToken) => {
-                if (err) {
-                    throw err;
-                }
-                res.status(200).json({ jwtToken }); // "jwtToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNWVlZmIzNDgxOTE3MTBkNWY5NzRkMzExIn0sImlhdCI6MTU5Mjc2NzMwNX0.jwzuFBz1TASEXl_njLBOozPIa499bbCbcyOyE-dhKMU"
+            if (err) {
+                throw err;
             }
-        );
+            res.status(200).json({ jwtToken }); // "jwtToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNWVlZmIzNDgxOTE3MTBkNWY5NzRkMzExIn0sImlhdCI6MTU5Mjc2NzMwNX0.jwzuFBz1TASEXl_njLBOozPIa499bbCbcyOyE-dhKMU"
+        });
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Error while saving');
@@ -61,7 +62,7 @@ export const requestLogin = async (req: Request, res: Response) => {
 
         if (!user) {
             return res.status(400).json({
-                message: 'User doesn\'t exist'
+                message: "User doesn't exist"
             });
         }
 
