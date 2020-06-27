@@ -3,8 +3,8 @@ import { validationResult } from 'express-validator';
 import User, { UserModel } from '../../model/User';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
-import * as dotenv from 'dotenv';
 import { Secret } from 'jsonwebtoken';
+import * as dotenv from 'dotenv';
 
 const env = dotenv.config();
 
@@ -38,7 +38,7 @@ export const requestSignup = async (req: Request, res: Response) => {
       if (err) {
         throw err;
       }
-      res.status(200).json({ jwtToken }); // "jwtToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNWVlZmIzNDgxOTE3MTBkNWY5NzRkMzExIn0sImlhdCI6MTU5Mjc2NzMwNX0.jwzuFBz1TASEXl_njLBOozPIa499bbCbcyOyE-dhKMU"
+      res.status(200).json({ jwtToken });
     });
   } catch (err) {
     console.error(err.message);
@@ -64,7 +64,7 @@ export const requestLogin = async (req: Request, res: Response) => {
 
     if (!user) {
       return res.status(400).json({
-        message: "User doesn't exist"
+        message: 'User doesn\'t exist'
       });
     }
 

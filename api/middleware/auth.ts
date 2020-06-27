@@ -12,6 +12,7 @@ export const authorizeUser = (req: GetUserAuthRequest, res: Response, next: Next
     return res.status(401).json({ message: 'Auth Error' });
   }
   try {
+    console.log('🍓', env.parsed?.JWT_KEY);
     const decoded: any = jwt.verify(token, env.parsed?.JWT_KEY as Secret);
     req.user = decoded.user;
     next();
