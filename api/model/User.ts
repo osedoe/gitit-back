@@ -3,14 +3,14 @@ import { Document, model, Schema } from 'mongoose';
 export interface UserModel extends Document {
   id: string;
   email: string;
-  token: string;
+  githubToken: string;
   password: string;
 }
 
 const UserSchema: Schema = new Schema({
   id: String,
   email: String,
-  token: String,
+  githubToken: String,
   password: String
 });
 

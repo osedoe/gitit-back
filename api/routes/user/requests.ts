@@ -16,7 +16,7 @@ export const requestSignup = async (req: Request, res: Response) => {
     });
   }
 
-  const { email, token } = req.body;
+  const { email, password, jwtToken: githubToken } = req.body;
 
   try {
     let user = await User.findOne({ email });
@@ -24,10 +24,11 @@ export const requestSignup = async (req: Request, res: Response) => {
       return res.status(400).json({ message: 'User already exists. Please update the token...' });
     }
 
-    user = new User({ email, token });
+    user = new User({ email, password, jwtToken: githubToken });
 
     const salt = await bcrypt.genSalt(10);
-    user.token = await bcrypt.hash(token, salt);
+    user.password = await bcrypt.hash(password, salt);
+    user.githubToken = await bcrypt.hash(githubToken, salt);
 
     await user.save();
 
@@ -50,6 +51,7 @@ export const requestLogin = async (req: Request, res: Response) => {
   // TODO: https://dev.to/dipakkr/implementing-authentication-in-nodejs-with-express-and-jwt-codelab-1-j5i - point 8
   // Review egghead - watch later playlist
   const errors = validationResult(req);
+  console.log(123);
 
   if (!errors.isEmpty()) {
     return res.status(400).json({
@@ -64,7 +66,7 @@ export const requestLogin = async (req: Request, res: Response) => {
 
     if (!user) {
       return res.status(400).json({
-        message: "User doesn't exist"
+        message: 'User doesn\'t exist'
       });
     }
 

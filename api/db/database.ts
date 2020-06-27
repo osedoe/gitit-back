@@ -29,6 +29,7 @@ class DBManager {
   }
 
   static connect({ host, port, database }: DBParams): Promise<void> {
+    console.log('🥁 Connecting to DB...');
     return DBManager.getInstance().connect({ host, port, database });
   }
 
@@ -37,12 +38,12 @@ class DBManager {
   }
 
   async connect({
-    host = 'localhost',
-    port = '27017',
-    database,
-    username,
-    password
-  }: DBParams): Promise<void> {
+                  host = 'localhost',
+                  port = '27017',
+                  database,
+                  username,
+                  password
+                }: DBParams): Promise<void> {
     const mongoURL = `mongodb://${host}:${port}/${database}`;
     try {
       await connect(mongoURL, { useNewUrlParser: true });

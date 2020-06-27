@@ -21,13 +21,15 @@ const app = express();
 
 const port = process.env.PORT ?? 3000;
 
+console.log('');
 DBManager.connect({
   host: dbConfig.host,
   port: dbConfig.port,
   database: dbConfig.database,
   username: dbConfig.username,
   password: dbConfig.password
-});
+}).then(() => console.log('✅ Succeed!'))
+  .catch(err => console.error('🔴', err));
 
 app.use(express.json());
 

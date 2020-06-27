@@ -8,6 +8,9 @@ import { GetUserAuthRequest } from '../../model/requestDefinitions';
 
 const userRouter = express.Router();
 
+userRouter.get('/', (req, res) => {
+  res.send('All OK!');
+});
 /**
  * @description Signup an user - It asks for an email and a github access token
  * @param path /api/v1/user/signup
