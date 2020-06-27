@@ -7,8 +7,15 @@
   "scripts": {
     "start-once": "PORT=8080 ts-node api/app.ts",
     "start": "PORT=8080 nodemon api/app.ts",
-    "lint": "eslint --ext=jsx,js,tsx,ts src",
+    "lint": "eslint --ext=jsx,js,tsx,ts api",
+    "lint-fix": "eslint --ext=jsx,js,tsx,ts --fix api",
+    "prettier": "prettier --config ./.prettierrc --write",
     "test": "jest '(\\/test\\/(?!e2e/)).*'"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint --fix && prettier --config ./.prettierrc --write"
+    }
   },
   "dependencies": {
     "@octokit/auth-token": "^2.4.1",
