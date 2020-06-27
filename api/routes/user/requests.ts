@@ -1,8 +1,12 @@
 import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
-import User, { UserModel } from '../model/User';
+import User, { UserModel } from '../../model/User';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
+import * as dotenv from 'dotenv';
+import { Secret } from 'jsonwebtoken';
+
+const env = dotenv.config();
 
 export const requestSignup = async (req: Request, res: Response) => {
   const errors = validationResult(req);
@@ -29,7 +33,8 @@ export const requestSignup = async (req: Request, res: Response) => {
 
     const payload = { user: { id: user.id } };
 
-    jwt.sign(payload, 'randomString', {}, (err, jwtToken) => {
+    // TODO: We should have different keys for production and development
+    jwt.sign(payload, env.parsed?.JWT_KEY as Secret, {}, (err, jwtToken) => {
       if (err) {
         throw err;
       }
@@ -59,7 +64,7 @@ export const requestLogin = async (req: Request, res: Response) => {
 
     if (!user) {
       return res.status(400).json({
-        message: 'User doesn\'t exist'
+        message: "User doesn't exist"
       });
     }
 
@@ -75,7 +80,7 @@ export const requestLogin = async (req: Request, res: Response) => {
       }
     };
 
-    jwt.sign(payload, 'randomString', {}, (err, jwtToken) => {
+    jwt.sign(payload, env.parsed?.JWT_KEY as Secret, {}, (err, jwtToken) => {
       if (err) {
         throw err;
       }

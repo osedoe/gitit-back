@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as dotenv from 'dotenv';
-import loginRouter from './routes/login';
+import userRouter from './routes/user/userRouter';
 import DBManager from './db/database';
 
 const env = dotenv.config();
@@ -30,8 +30,12 @@ DBManager.connect({
 });
 
 app.use(express.json());
-app.use('/login', loginRouter);
 
-app.get('/', (req, res) => res.send('Hello World!'));
+/**
+ * # V1 - API
+ */
+const router = express.Router();
+app.use('/api/v1', router);
+router.use('/user', userRouter);
 
 app.listen(port, () => console.log(`Started listening at http://localhost:${port}`));
