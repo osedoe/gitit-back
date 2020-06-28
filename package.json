@@ -14,7 +14,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn lint && prettier --config ./.prettierrc --write api"
+      "pre-commit": "yarn lint"
     }
   },
   "dependencies": {
