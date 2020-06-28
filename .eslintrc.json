@@ -47,7 +47,7 @@
     "func-names": "off",
     "global-require": 0,
     "indent": [
-      "error",
+      2,
       2,
       {
         "SwitchCase": 1,
