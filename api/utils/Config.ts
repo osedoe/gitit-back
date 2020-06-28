@@ -24,7 +24,7 @@ export class Config {
     this.username = env.parsed?.USERNAME;
     this.password = env.parsed?.PASSWORD;
     this.jwtKey = env.parsed?.JWT_KEY;
-  };
+  }
 
   static getInstance(): Config {
     if (!Config.instance) {
