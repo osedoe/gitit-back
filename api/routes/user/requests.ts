@@ -4,6 +4,7 @@ import User, { UserModel } from '../../model/User';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { Config } from '../../utils/Config';
+import { GetUserAuthRequest } from '../../model/requestDefinitions';
 
 export const requestSignup = async (req: Request, res: Response) => {
   const errors = validationResult(req);
@@ -81,5 +82,15 @@ export const requestLogin = async (req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
+  }
+};
+
+export const getUser = async (req: GetUserAuthRequest, res: Response) => {
+  try {
+    // request.user is getting fetched from Middleware after token authentication
+    const user = await User.findById(req.user.id);
+    res.json(user);
+  } catch (e) {
+    res.send({ message: 'Error in Fetching user' });
   }
 };
