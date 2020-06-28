@@ -46,6 +46,16 @@
     "import/export": 2,
     "func-names": "off",
     "global-require": 0,
+    "indent": [
+      "error",
+      2,
+      {
+        "SwitchCase": 1,
+        "ignoredNodes": [
+          "ConditionalExpression *"
+        ]
+      }
+    ],
     "semi": [
       2,
       "always",
