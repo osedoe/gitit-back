@@ -74,11 +74,11 @@ export class Config {
     return Config.getInstance().getPassword();
   }
 
-  getJwtToken(): Secret {
+  getJwtKey(): Secret {
     return this.jwtKey as Secret;
   }
 
-  static getJwtToken(): Secret {
-    return Config.getInstance().getJwtToken();
+  static getJwtKey(): Secret {
+    return Config.getInstance().getJwtKey();
   }
 }
