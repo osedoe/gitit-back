@@ -1,19 +1,38 @@
-import * as express from 'express'
-import github from './routes/githubRequest';
-import * as isDev from "electron-is-dev";
+import * as express from 'express';
+import userRouter from './routes/user/userRouter';
+import DBManager from './db/database';
+import { Config } from './utils/Config';
 
-if (isDev) {
-    console.log('Running in development');
-} else {
-    console.log('Running in production');
-}
+const dbConfig = {
+  host: Config.getHost(),
+  port: Config.getPort(),
+  database: Config.getDatabase(),
+  username: Config.getUsername(),
+  password: Config.getPassword()
+};
 
 const app = express();
-const port = process.env.PORT || 3000;
 
+const port = process.env.PORT ?? 3000;
 
-app.use('/github', github)
+console.log('');
+DBManager.connect({
+  host: dbConfig.host,
+  port: dbConfig.port,
+  database: dbConfig.database,
+  username: dbConfig.username,
+  password: dbConfig.password
+})
+  .then(() => console.log('✅ Succeed!'))
+  .catch((err) => console.error('🔴', err));
 
-app.get('/', (req, res) => res.send('Hello World!'))
+app.use(express.json());
 
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
+/**
+ * # V1 - API
+ */
+const router = express.Router();
+app.use('/api/v1', router);
+router.use('/user', userRouter);
+
+app.listen(port, () => console.log(`Started listening at http://localhost:${port}`));
