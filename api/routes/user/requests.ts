@@ -4,9 +4,6 @@ import User, { UserModel } from '../../model/User';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { Config } from '../../utils/Config';
-// import * as dotenv from 'dotenv';
-
-// const env = dotenv.config();
 
 export const requestSignup = async (req: Request, res: Response) => {
   const errors = validationResult(req);
@@ -16,7 +13,7 @@ export const requestSignup = async (req: Request, res: Response) => {
     });
   }
 
-  const { email, password, jwtToken: githubToken } = req.body;
+  const { email, password, githubToken } = req.body;
 
   try {
     let user = await User.findOne({ email });
@@ -24,7 +21,7 @@ export const requestSignup = async (req: Request, res: Response) => {
       return res.status(400).json({ message: 'User already exists. Please update the token...' });
     }
 
-    user = new User({ email, password, jwtToken: githubToken });
+    user = new User({ email, password, githubToken });
 
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
@@ -32,10 +29,11 @@ export const requestSignup = async (req: Request, res: Response) => {
 
     await user.save();
 
-    const payload = { user: { id: user.id } };
+    // Attention => "_id"
+    const payload = { user: { id: user._id } };
 
     // TODO: We should have different keys for production and development
-    jwt.sign(payload, Config.getJwtToken(), {}, (err, jwtToken) => {
+    jwt.sign(payload, Config.getJwtKey(), {}, (err, jwtToken) => {
       if (err) {
         throw err;
       }
@@ -48,10 +46,7 @@ export const requestSignup = async (req: Request, res: Response) => {
 };
 
 export const requestLogin = async (req: Request, res: Response) => {
-  // TODO: https://dev.to/dipakkr/implementing-authentication-in-nodejs-with-express-and-jwt-codelab-1-j5i - point 8
-  // Review egghead - watch later playlist
   const errors = validationResult(req);
-  console.log(123);
 
   if (!errors.isEmpty()) {
     return res.status(400).json({
@@ -65,9 +60,7 @@ export const requestLogin = async (req: Request, res: Response) => {
     const user: UserModel | null = await User.findOne({ email });
 
     if (!user) {
-      return res.status(400).json({
-        message: "User doesn't exist"
-      });
+      return res.status(400).json({ message: 'User doesn\'t exist' });
     }
 
     const passwordsMatch = await bcrypt.compare(password, user.password);
@@ -76,13 +69,10 @@ export const requestLogin = async (req: Request, res: Response) => {
       return res.status(400).json({ message: 'Wrong password' });
     }
 
-    const payload = {
-      user: {
-        id: user.id
-      }
-    };
+    // Attention => "_id"
+    const payload = { user: { id: user._id } };
 
-    jwt.sign(payload, Config.getJwtToken(), {}, (err, jwtToken) => {
+    jwt.sign(payload, Config.getJwtKey(), {}, (err, jwtToken) => {
       if (err) {
         throw err;
       }
