@@ -1,4 +1,5 @@
-import { Document, model, Schema } from 'mongoose';
+import { Document, Schema } from 'mongoose';
+import DBManager from '../db/database';
 
 export interface UserModel extends Document {
   id: string;
@@ -14,4 +15,5 @@ const UserSchema: Schema = new Schema({
   password: String
 });
 
-export default model<UserModel>('user', UserSchema);
+export default DBManager.getInstance().setModel<UserModel>('user', UserSchema);
+// export default mongoose.connection.model<UserModel>('user', UserSchema);

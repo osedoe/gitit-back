@@ -1,4 +1,4 @@
-import { connect, Connection, connection, Schema } from 'mongoose';
+import * as mongoose from 'mongoose';
 
 interface DBParams {
   host?: string;
@@ -14,7 +14,7 @@ class DBManager {
   port?: string;
   database?: string;
   options?: string;
-  private connection?: Connection;
+  private connection: mongoose.Connection = {} as mongoose.Connection;
 
   private constructor() {
     // Do nothing
@@ -28,15 +28,6 @@ class DBManager {
     return DBManager.instance;
   }
 
-  static connect({ host, port, database }: DBParams): Promise<void> {
-    console.log('🥁 Connecting to DB...');
-    return DBManager.getInstance().connect({ host, port, database });
-  }
-
-  static getConnection(): Connection | undefined {
-    return DBManager.getInstance().getConnection();
-  }
-
   async connect({
                   host = 'localhost',
                   port = '27017',
@@ -46,28 +37,48 @@ class DBManager {
                 }: DBParams): Promise<void> {
     const mongoURL = `mongodb://${host}:${port}/${database}`;
     try {
-      await connect(mongoURL, { useNewUrlParser: true });
-      this.assignConnectionInstance(connection);
+      const conn = await mongoose.createConnection(mongoURL, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        poolSize: 50
+      });
+      if (!conn) {
+        throw Error('No connection instance');
+      }
+      this.connection = mongoose.connection;
+
     } catch (error) {
       console.error('Could not connect to MongoDB: ', error);
       throw error;
     }
   }
 
-  getConnection(): Connection | undefined {
+  static connect({ host, port, database }: DBParams): Promise<void> {
+    console.log('🥁 Connecting to DB...');
+    return DBManager.getInstance().connect({ host, port, database });
+  }
+
+  getConnection(): mongoose.Connection {
     return this.connection;
   }
 
-  setSchema(): void {
-    const userSchema = new Schema({
-      username: String,
-      password: String
-    });
+  static getConnection(): mongoose.Connection {
+    return DBManager.getInstance().getConnection();
   }
 
-  private assignConnectionInstance(connection: Connection): void {
-    this.connection = connection;
+  setModel<T extends mongoose.Document>(name: string, schema: mongoose.Schema): void {
+    mongoose.connection.model<T>(name, schema);
   }
+
+  static setModel<T extends mongoose.Document>(name: string, schema: mongoose.Schema): void {
+    DBManager.getInstance().setModel<T>(name, schema);
+  }
+
+  getUserModel() {
+    return mongoose.connection.get;
+    const User = mongoose.model('user', UserSchema);
+  }
+  
 }
 
 export default DBManager;
