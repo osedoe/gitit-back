@@ -1,7 +1,7 @@
 import * as jwt from 'jsonwebtoken';
 import { NextFunction, Response } from 'express';
 import { GetUserAuthRequest } from '../model/requestDefinitions';
-import { Config } from '../utils/Config';
+import { Config } from '../config/Config';
 
 export const authorizeUser = (req: GetUserAuthRequest, res: Response, next: NextFunction) => {
   const token = req.header('token');
