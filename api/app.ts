@@ -3,6 +3,7 @@ import userRouter from './routes/user/userRouter';
 import DBManager from './db/database';
 import { Config } from './config/Config';
 import { UserModel, UserSchema } from './model/User';
+import * as morgan from 'morgan';
 
 DBManager.connect({
   host: Config.getHost(),
@@ -18,6 +19,10 @@ DBManager.connect({
 
   const port = process.env.PORT ?? 3000;
 
+  if (Config.isDevelopmentEnvironment()) {
+    app.use(morgan('tiny'));
+  }
+
   app.use(express.json());
 
   // V1 - API
@@ -26,6 +31,6 @@ DBManager.connect({
   router.use('/user', userRouter);
 
   app.listen(port, () => console.log(`Started listening at http://localhost:${port}`));
-})
-  .catch((err) => console.error('🔴', err));
+
+}).catch((err) => console.error('🔴', err));
 
