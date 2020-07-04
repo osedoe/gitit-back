@@ -11,6 +11,8 @@ export class Config {
   private readonly database?: string;
   private readonly username?: string;
   private readonly password?: string;
+
+  private readonly environment?: string;
   private readonly jwtKey?: string;
 
   private constructor() {
@@ -23,6 +25,8 @@ export class Config {
     this.database = env.parsed?.DATABASE;
     this.username = env.parsed?.USERNAME;
     this.password = env.parsed?.PASSWORD;
+
+    this.environment = process.env.NODE_ENV;
     this.jwtKey = env.parsed?.JWT_KEY;
   }
 
@@ -80,5 +84,21 @@ export class Config {
 
   static getJwtKey(): Secret {
     return Config.getInstance().getJwtKey();
+  }
+
+  getEnvironment(): string | undefined {
+    return this.environment;
+  }
+
+  static getEnvironment(): string | undefined {
+    return Config.getInstance().getEnvironment();
+  }
+
+  static isDevelopmentEnvironment(): boolean {
+    return Config.getInstance().getEnvironment() === 'development';
+  }
+
+  static isProductionEnvironment(): boolean {
+    return Config.getInstance().getEnvironment() === 'production';
   }
 }
