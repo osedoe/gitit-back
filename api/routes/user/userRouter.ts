@@ -5,9 +5,11 @@ import { authorizeUser } from '../../middleware/auth';
 
 const userRouter = express.Router();
 
+// TODO: To remove
 userRouter.get('/', (req, res) => {
   res.send('All OK!');
 });
+
 /**
  * @description Signup a user
  * @param path - /api/v1/user/signup
