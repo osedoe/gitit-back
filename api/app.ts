@@ -7,17 +7,17 @@ import * as morgan from 'morgan';
 
 DBManager.connect({
   host: Config.getHost(),
-  port: Config.getPort(),
-  database: Config.getDatabase(),
-  username: Config.getUsername(),
-  password: Config.getPassword()
+  port: Config.getDbPort(),
+  database: Config.getDbName(),
+  username: Config.getDbUsername(),
+  password: Config.getDbPassword()
 }).then(() => {
   DBManager.setModel<UserModel>('user', UserSchema);
   console.log('✅ Succeed!');
 }).then(() => {
   const app = express();
 
-  const port = process.env.PORT ?? 3000;
+  const port = Config.getServerPort();
 
   if (Config.isDevelopmentEnvironment()) {
     app.use(morgan('tiny'));
