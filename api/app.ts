@@ -20,9 +20,7 @@ DBManager.connect({
 
   app.use(express.json());
 
-  /**
-   * # V1 - API
-   */
+  // V1 - API
   const router = express.Router();
   app.use('/api/v1', router);
   router.use('/user', userRouter);

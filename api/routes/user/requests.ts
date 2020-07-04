@@ -88,8 +88,6 @@ export const requestLogin = async (req: Request, res: Response) => {
 };
 
 export const getUser = async (req: GetUserAuthRequest, res: Response) => {
-  console.log('🍓');
-  res.send('123');
   try {
     // request.user is getting fetched from Middleware after token authentication
     const user = await DBManager.getUserModel().findById(req.user.id);
