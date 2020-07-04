@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
-import User, { UserModel } from '../../model/User';
+import { UserModel } from '../../model/User';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
-import { Config } from '../../utils/Config';
+import { Config } from '../../config/Config';
 import { GetUserAuthRequest } from '../../model/requestDefinitions';
+import DBManager from '../../db/database';
 
 export const requestSignup = async (req: Request, res: Response) => {
   const errors = validationResult(req);
@@ -17,11 +18,12 @@ export const requestSignup = async (req: Request, res: Response) => {
   const { email, password, githubToken } = req.body;
 
   try {
-    let user = await User.findOne({ email });
+    let user = await DBManager.getUserModel().findOne({ email });
     if (user) {
       return res.status(400).json({ message: 'User already exists. Please update the token...' });
     }
 
+    const User = DBManager.getUserModel();
     user = new User({ email, password, githubToken });
 
     const salt = await bcrypt.genSalt(10);
@@ -58,7 +60,7 @@ export const requestLogin = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   try {
-    const user: UserModel | null = await User.findOne({ email });
+    const user: UserModel | null = await DBManager.getUserModel().findOne({ email });
 
     if (!user) {
       return res.status(400).json({ message: 'User doesn\'t exist' });
@@ -86,9 +88,11 @@ export const requestLogin = async (req: Request, res: Response) => {
 };
 
 export const getUser = async (req: GetUserAuthRequest, res: Response) => {
+  console.log('🍓');
+  res.send('123');
   try {
     // request.user is getting fetched from Middleware after token authentication
-    const user = await User.findById(req.user.id);
+    const user = await DBManager.getUserModel().findById(req.user.id);
     res.json(user);
   } catch (e) {
     res.send({ message: 'Error in Fetching user' });
