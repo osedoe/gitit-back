@@ -1,4 +1,6 @@
 import * as mongoose from 'mongoose';
+import { Model } from 'mongoose';
+import { UserModel, UserSchema } from '../model/User';
 
 interface DBParams {
   host?: string;
@@ -74,11 +76,10 @@ class DBManager {
     DBManager.getInstance().setModel<T>(name, schema);
   }
 
-  getUserModel() {
-    return mongoose.connection.get;
-    const User = mongoose.model('user', UserSchema);
+  getUserModel(): Model<UserModel> {
+    return this.connection.model<UserModel>('user', UserSchema);
   }
-  
+
 }
 
 export default DBManager;
