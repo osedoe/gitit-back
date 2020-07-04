@@ -5,8 +5,8 @@
   "author": "Jose Diaz-Gonzalez <jose.diazg@protonmail.com>",
   "license": "MIT",
   "scripts": {
-    "start-once": "PORT=8080 ts-node api/app.ts",
-    "start": "NODE_ENV=development PORT=8080 nodemon api/app.ts",
+    "start-once": "PORT=3000 ts-node api/app.ts",
+    "start": "NODE_ENV=development PORT=3000 nodemon api/app.ts",
     "lint": "eslint --ext=jsx,js,tsx,ts api",
     "lint-fix": "eslint --ext=jsx,js,tsx,ts --fix api",
     "prettier": "prettier --config ./.prettierrc --write api",

@@ -6,11 +6,13 @@ const env = dotenv.config();
 export class Config {
   private static instance: Config;
 
-  private readonly host: string;
-  private readonly port: string;
-  private readonly database?: string;
-  private readonly username?: string;
-  private readonly password?: string;
+  private readonly serverPort: string | number;
+
+  private readonly dbHost: string;
+  private readonly dbPort: string | number;
+  private readonly dbName?: string;
+  private readonly dbUsername?: string;
+  private readonly dbPassword?: string;
 
   private readonly environment?: string;
   private readonly jwtKey?: string;
@@ -20,11 +22,13 @@ export class Config {
       throw env.error;
     }
 
-    this.host = env.parsed?.HOST ?? 'localhost';
-    this.port = env.parsed?.PORT ?? '27017';
-    this.database = env.parsed?.DATABASE;
-    this.username = env.parsed?.USERNAME;
-    this.password = env.parsed?.PASSWORD;
+    this.serverPort = env.parsed?.SERVER_PORT ?? '3000';
+
+    this.dbHost = env.parsed?.DB_HOST ?? 'localhost';
+    this.dbPort = env.parsed?.DB_PORT ?? '27017';
+    this.dbName = env.parsed?.DB_NAME;
+    this.dbUsername = env.parsed?.DB_USERNAME;
+    this.dbPassword = env.parsed?.DB_PASSWORD;
 
     this.environment = process.env.NODE_ENV;
     this.jwtKey = env.parsed?.JWT_KEY;
@@ -34,48 +38,55 @@ export class Config {
     if (!Config.instance) {
       Config.instance = new Config();
     }
-
     return Config.instance;
   }
 
+  getServerPort(): string | number {
+    return this.serverPort;
+  }
+
+  static getServerPort(): string | number | undefined {
+    return Config.getInstance().getServerPort();
+  }
+
   getHost(): string {
-    return this.host;
+    return this.dbHost;
   }
 
   static getHost(): string {
     return Config.getInstance().getHost();
   }
 
-  getPort(): string {
-    return this.port;
+  getDbPort(): string | number {
+    return this.dbPort;
   }
 
-  static getPort(): string {
-    return Config.getInstance().getPort();
+  static getDbPort(): string | number {
+    return Config.getInstance().getDbPort();
   }
 
-  getDatabase(): string | undefined {
-    return this.database;
+  getDbName(): string | undefined {
+    return this.dbName;
   }
 
-  static getDatabase(): string | undefined {
-    return Config.getInstance().getDatabase();
+  static getDbName(): string | undefined {
+    return Config.getInstance().getDbName();
   }
 
-  getUsername(): string | undefined {
-    return this.username;
+  getDbUsername(): string | undefined {
+    return this.dbUsername;
   }
 
-  static getUsername(): string | undefined {
-    return Config.getInstance().getUsername();
+  static getDbUsername(): string | undefined {
+    return Config.getInstance().getDbUsername();
   }
 
-  getPassword(): string | undefined {
-    return this.password;
+  getDbPassword(): string | undefined {
+    return this.dbPassword;
   }
 
-  static getPassword(): string | undefined {
-    return Config.getInstance().getPassword();
+  static getDbPassword(): string | undefined {
+    return Config.getInstance().getDbPassword();
   }
 
   getJwtKey(): Secret {
