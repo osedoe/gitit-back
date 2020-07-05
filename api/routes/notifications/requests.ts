@@ -13,12 +13,17 @@ const tokenValue = Config.getAuthToken();
 
 const params = `notifications?all=${all}&participating=${participating}&since=${since}&before=${before}`;
 
-export const requestAllNotifications = (req: Request, res: Response) => {
+export const requestAllNotifications = async (req: Request, res: Response) => {
   const baseUrl = 'https://api.github.com/';
-  return fetch(`${baseUrl}${params}`, {
+  const base64Auth = Buffer.from(`${username}:${tokenValue}`, 'binary').toString('base64');
+
+  const response = await fetch(`${baseUrl}${params}`, {
     headers: {
       ...DEFAULT_HEADERS,
-      Authorization: `Basic ${btoa(`${username}:${tokenValue}`)}`
+      Authorization: `Basic ${base64Auth}`
     } as any
-  }).then(response => response.json());
+  });
+
+  const body = await response.text();
+  res.send(body);
 };
