@@ -7,6 +7,6 @@ notificationRouter.get('/', (req, res) => {
   res.send('Notifications!');
 });
 
-notificationRouter.get('/all', requestAllNotifications);
+notificationRouter.get('/:all', requestAllNotifications);
 
 export default notificationRouter;
