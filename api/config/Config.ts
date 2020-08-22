@@ -14,6 +14,7 @@ export class Config {
   private readonly dbUsername?: string;
   private readonly dbPassword?: string;
 
+  private readonly authToken?: string;
   private readonly environment?: string;
   private readonly jwtKey?: string;
 
@@ -30,6 +31,7 @@ export class Config {
     this.dbUsername = env.parsed?.DB_USERNAME;
     this.dbPassword = env.parsed?.DB_PASSWORD;
 
+    this.authToken = env.parsed?.PERSONAL_ACCESS_TOKEN;
     this.environment = process.env.NODE_ENV;
     this.jwtKey = env.parsed?.JWT_KEY;
   }
@@ -111,5 +113,13 @@ export class Config {
 
   static isProductionEnvironment(): boolean {
     return Config.getInstance().getEnvironment() === 'production';
+  }
+
+  getAuthToken(): string | undefined {
+    return this.authToken;
+  }
+
+  static getAuthToken(): string | undefined {
+    return Config.getInstance().getAuthToken();
   }
 }
