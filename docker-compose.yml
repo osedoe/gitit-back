@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  mongodb:
+    image: library/mongo:latest
+    container_name: gitit-db
+    hostname: mongodb
+    volumes:
+      - ./.docker/mongodb/mongod.conf:etc/mongod.conf
+      - ./.docker/mongodb/initdb.d/:/docker-entrypoint-initdb.d/
+      - ./.docker/mongodb/data/db/:/data/db/
+      - ./.docker/mongodb/data/log/:/var/log/mongodb/
+    env_file:
+      - .env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
+      MONGO_INITDB_DATABASE: ${DB_NAME}
+    ports:
+      - "27017:27017"
+    command: ["-f", "/etc/mongod.conf"]
