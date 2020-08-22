@@ -4,6 +4,7 @@ import DBManager from './db/database';
 import { Config } from './config/Config';
 import { UserModel, UserSchema } from './model/User';
 import * as morgan from 'morgan';
+import notificationRouter from './routes/notifications/notificationsRouter';
 
 DBManager.connect({
   host: Config.getHost(),
@@ -29,6 +30,7 @@ DBManager.connect({
   const router = express.Router();
   app.use('/api/v1', router);
   router.use('/user', userRouter);
+  router.use('/notification', notificationRouter);
 
   app.listen(port, () => console.log(`Started listening at http://localhost:${port}`));
 
