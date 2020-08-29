@@ -1,7 +1,13 @@
-version: '3'
+version: '3.8'
 
 services:
-  mongodb:
+  app:
+    build: /
+    ports:
+      - 3000:3000
+    depends_on:
+      - database
+  database:
     image: library/mongo:latest
     container_name: gitit-db
     hostname: mongodb
