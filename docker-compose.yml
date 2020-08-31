@@ -2,14 +2,14 @@ version: '3.8'
 
 services:
   app:
-    build: /
+    build: .
     ports:
       - 3000:3000
     depends_on:
       - database
   database:
-    image: library/mongo:latest
-    container_name: gitit-db
+    image: library/mongo:4.0.4
+    container_name: gitit-container-db
     hostname: mongodb
     volumes:
       - ./.docker/mongodb/mongod.conf:etc/mongod.conf
@@ -24,4 +24,4 @@ services:
       MONGO_INITDB_DATABASE: ${DB_NAME}
     ports:
       - "27017:27017"
-    command: ["-f", "/etc/mongod.conf"]
+    command: ["-f", "/etc/mongod.conf.orig"]

@@ -6,8 +6,6 @@ RUN yarn
 
 COPY . .
 
-RUN yarn build
-WORKDIR dist/
-
 EXPOSE 3000
-CMD ["node", "api/app.ts"]
+CMD ["nodemon", "api/app.ts"]
+
