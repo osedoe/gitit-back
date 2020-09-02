@@ -61,12 +61,12 @@ class DBManager {
     return DBManager.getInstance().getConnection();
   }
 
-  setModel<T extends Document>(name: string, schema: mongoose.Schema): void {
-    mongoose.connection.model(name, schema);
+  setModel<T extends mongoose.Document>(name: string, schema: mongoose.Schema): void {
+    mongoose.connection.model<T>(name, schema);
   }
 
-  static setModel(name: string, schema: mongoose.Schema): void {
-    DBManager.getInstance().setModel(name, schema);
+  static setModel<T extends mongoose.Document>(name: string, schema: mongoose.Schema): void {
+    DBManager.getInstance().setModel<T>(name, schema);
   }
 
   getUserModel(): mongoose.Model<UserModel> {

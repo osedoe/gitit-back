@@ -2,7 +2,7 @@ import * as express from 'express';
 import userRouter from './routes/user/userRouter';
 import DBManager from './db/database';
 import { Config } from './config/Config';
-import { UserSchema } from './model/User';
+import { UserModel, UserSchema } from './model/User';
 import * as morgan from 'morgan';
 import notificationRouter from './routes/notifications/notificationsRouter';
 
@@ -15,7 +15,7 @@ const initDB = {
 };
 
 DBManager.connect(initDB).then(() => {
-  DBManager.setModel('user', UserSchema);
+  DBManager.setModel<UserModel>('user', UserSchema);
   console.log('✅ Succeed!');
 }).then(() => {
   const app = express();
