@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { Connection, Document, Model, Schema } from 'mongoose';
+// import { Connection, Document, Model, Schema } from 'mongoose';
 import { UserModel, UserSchema } from '../model/User';
 
 interface DBParams {
@@ -30,8 +30,8 @@ class DBManager {
     return DBManager.instance;
   }
 
-  async connect({ host = 'localhost', port = '27017', database, username, password }: DBParams): Promise<Connection> {
-    console.log('🥁 Connecting to DB...');
+  async connect({ host = 'localhost', port = '27017', database, username, password }: DBParams): Promise<mongoose.Connection> {
+    console.log(`🥁 Connecting to DB with host ${host}, port ${port}, database ${database}, username ${username}, password ${password} ...`);
 
     const mongoURL = `mongodb://${host}:${port}/${database}`;
     try {
@@ -49,31 +49,31 @@ class DBManager {
     }
   }
 
-  static connect({ host, port, database }: DBParams): Promise<Connection> {
-    return DBManager.getInstance().connect({ host, port, database });
+  static connect({ host, port, database, username, password }: DBParams): Promise<mongoose.Connection> {
+    return DBManager.getInstance().connect({ host, port, database, username, password });
   }
 
-  getConnection(): Connection {
+  getConnection(): mongoose.Connection {
     return this.connection;
   }
 
-  static getConnection(): Connection {
+  static getConnection(): mongoose.Connection {
     return DBManager.getInstance().getConnection();
   }
 
-  setModel<T extends Document>(name: string, schema: Schema): void {
+  setModel<T extends mongoose.Document>(name: string, schema: mongoose.Schema): void {
     mongoose.connection.model<T>(name, schema);
   }
 
-  static setModel<T extends Document>(name: string, schema: Schema): void {
+  static setModel<T extends mongoose.Document>(name: string, schema: mongoose.Schema): void {
     DBManager.getInstance().setModel<T>(name, schema);
   }
 
-  getUserModel(): Model<UserModel> {
+  getUserModel(): mongoose.Model<UserModel> {
     return this.connection.model<UserModel>('user', UserSchema);
   }
 
-  static getUserModel(): Model<UserModel> {
+  static getUserModel(): mongoose.Model<UserModel> {
     return DBManager.getInstance().getUserModel();
   }
 

@@ -6,13 +6,15 @@ import { UserModel, UserSchema } from './model/User';
 import * as morgan from 'morgan';
 import notificationRouter from './routes/notifications/notificationsRouter';
 
-DBManager.connect({
+const initDB = {
   host: Config.getHost(),
   port: Config.getDbPort(),
   database: Config.getDbName(),
   username: Config.getDbUsername(),
   password: Config.getDbPassword()
-}).then(() => {
+};
+
+DBManager.connect(initDB).then(() => {
   DBManager.setModel<UserModel>('user', UserSchema);
   console.log('✅ Succeed!');
 }).then(() => {
