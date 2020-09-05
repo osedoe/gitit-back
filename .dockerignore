@@ -1,0 +1,11 @@
+.DS_Store
+.idea/
+dist
+Dockerfile*
+docker-compose*
+.dockerignore
+.gitignore
+.git
+README.md
+LICENSE
+node_modules
