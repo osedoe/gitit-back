@@ -12,7 +12,7 @@
     "docker-dev": "docker-compose -f docker-compose.dev.yml up --build",
     "build": "tsc -b",
     "lint": "eslint --ext=jsx,js,tsx,ts api",
-    "lint-fix": "eslint --ext=jsx,js,tsx,ts --fix api",
+    "clean": "eslint --ext=jsx,js,tsx,ts --fix api",
     "prettier": "prettier --config ./.prettierrc --write api",
     "test": "jest '(\\/test\\/(?!e2e/)).*'"
   },
