@@ -1,6 +1,6 @@
 {
   "name": "gitit-back",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "main": "index.js",
   "author": "Jose Diaz-Gonzalez <jose.diazg@protonmail.com>",
   "license": "MIT",
