@@ -16,7 +16,7 @@ services:
       - 3000:3000
     depends_on:
       - database
-    command: yarn start
+    command: yarn start-dev
   database:
     image: library/mongo:4.2.9
     container_name: gitit-mongodb
